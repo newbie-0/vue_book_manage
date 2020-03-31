@@ -16,7 +16,7 @@
         <el-form-item label="作者">
           <el-input v-model="form.author"></el-input>
         </el-form-item>
-        <el-form-item label="价格">
+        <el-form-item label="价格(元)">
           <el-input v-model="form.price"></el-input>
         </el-form-item>
         <el-form-item label="介绍">
@@ -28,7 +28,7 @@
             action=""
             :http-request="upload"
             :limit="1"
-            :auto-upload="false">
+            list-type="picture">
             <el-button size="small" type="primary">选取图片</el-button>
           </el-upload>
         </el-form-item>
@@ -36,7 +36,10 @@
           <el-input v-model="form.inventory"></el-input>
         </el-form-item>
         <el-form-item label="关联书籍">
-          <el-cascader v-model="form.relations" @change="handleSelection" ref="cascader" :options="options" :props="props" :show-all-levels="false" clearable></el-cascader>
+          <el-select v-model="ids" multiple placeholder="请选择关联书籍">
+            <el-option v-for="item in books" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">立即更新</el-button>
@@ -53,13 +56,7 @@ export default {
     return {
       form: {},
       categorys: [],
-      options: [],
-      props: {
-        multiple: true,
-        label: 'name',
-        value: 'id',
-        children: 'children'
-      },
+      books: [],
       ids: []
     }
   },
@@ -67,7 +64,8 @@ export default {
     this.form = {}
     this.form = this.$route.query
     this.loadCategory()
-    this.loadCategoryBook()
+    this.loadBooks()
+    this.loadRelationBook()
   },
   methods: {
     back() {
@@ -77,61 +75,32 @@ export default {
       const { data: res } = await this.$http.get('category/findAll')
       this.categorys = res.data
     },
-    async loadCategoryBook() {
-      const { data: res } = await this.$http.get('category/cascadeBookFindAll')
-      this.options = res.data
+    async loadBooks() {
+      const { data: res } = await this.$http.get('book/findBookLike', { params: { status: '已上架' } })
+      this.books = res.data.list
     },
     async loadRelationBook() {
-
-    },
-    handleSelection(value) {
-      this.ids = []
-      for (var i = 0; i < value.length; i++) {
-        this.ids.push(value[i][1])
-      }
+      const { data: res } = await this.$http.get('book/findRelationBook', { params: { id: this.form.id } })
+      res.data.map(book => {
+        this.ids.push(book.id)
+      })
     },
     onSubmit() {
-      this.$refs.upload.submit()
+      const user = JSON.parse(sessionStorage.getItem('user'))
+      this.form.userId = user.id
+      this.$http.post('book/saveOrUpdate', qs.stringify(this.form)).then(response => {
+        if (this.ids.length > 0) {
+          this.$http.post('book/saveRelation', qs.stringify({ bookId: response.data.data, relationId: this.ids }))
+          this.$message.success(response.data.message)
+        }
+        this.$router.push('/book/all')
+      })
     },
-    // upload(file) {
-    //   const user = JSON.parse(sessionStorage.getItem('user'))
-    //   const data = new FormData()
-    //   data.append('file', file.file)
-    //   if (typeof this.form.id !== 'undefined') {
-    //     data.append('id', this.form.id)
-    //   }
-    //   data.append('name', this.form.name)
-    //   data.append('author', this.form.author)
-    //   data.append('price', this.form.price)
-    //   data.append('userId', user.id)
-    //   data.append('categoryId', this.form.categoryId)
-    //   data.append('intro', this.form.intro)
-    //   data.append('inventory', this.form.inventory)
-    //   this.$http.post('book/saveOrUpdate', data, {
-    //     headers: { 'Content-Type': 'multipart/form-data' }
-    //   }).then(res => {
-    //     this.ids.map(id => {
-    //       this.$http.post('book/saveRelation', qs.stringify({ bookId: res.data.data, relationId: id }))
-    //     })
-    //     this.$message.success(res.data.message)
-    //     this.$router.push('/book/all')
-    //   })
-    // }
     upload(file) {
       const data = new FormData()
       data.append('file', file.file)
-      this.$http.post('book/upload', data).then(res => {
+      this.$http.post('upload/image', data).then(res => {
         this.form.image = res.data.data
-        const user = JSON.parse(sessionStorage.getItem('user'))
-        this.form.userId = user.id
-        this.$http.post('book/saveOrUpdate', qs.stringify(this.form)).then(response => {
-          // this.ids.map(id => {
-          //   this.$http.post('book/saveRelation', qs.stringify({ bookId: response.data.data, relationId: id }))
-          // })
-          this.$http.post('book/saveRelation', qs.stringify({ bookId: response.data.data, relationId: this.ids }))
-          this.$message.success(response.data.message)
-          this.$router.push('/book/all')
-        })
       })
     }
   }

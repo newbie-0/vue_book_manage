@@ -19,7 +19,7 @@ export default {
   created() {},
   methods: {
     toWelcome() {
-      this.$router.push('welcome')
+      this.$router.push('/welcome')
     }
   }
 }

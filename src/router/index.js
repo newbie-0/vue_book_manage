@@ -10,6 +10,7 @@ import CheckList from '../components/book/CheckList.vue'
 import CategoryList from '../components/category/List.vue'
 import Info from '../components/book/Info.vue'
 import NotFound from '../components/error/404.vue'
+import UserList from '../components/user/List.vue'
 
 Vue.use(VueRouter)
 
@@ -27,8 +28,9 @@ const router = new VueRouter({
         { path: '/book/all', component: All, meta: { title: '书籍管理' } },
         { path: '/book/add', component: Add, meta: { title: '书籍管理' } },
         { path: '/book/checkList', component: CheckList, meta: { title: '书籍审核' } },
-        { path: '/category/list', component: CategoryList, meta: { title: '分类列表' } },
-        { path: '/book/info', component: Info, meta: { title: '书籍详细信息' } }
+        { path: '/category/list', component: CategoryList, meta: { title: '分类管理' } },
+        { path: '/book/info', component: Info, meta: { title: '书籍详细信息' } },
+        { path: '/user/list', component: UserList, meta: { title: '用户管理' } }
       ]
     },
     { path: '*', component: NotFound }

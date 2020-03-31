@@ -36,14 +36,6 @@
         <el-table :data="data.list" style="width: 100%" border>
           <el-table-column prop="id" label="编号" >
           </el-table-column>
-          <el-table-column prop="name" label="名称" >
-          </el-table-column>
-          <el-table-column prop="price" label="价格" >
-          </el-table-column>
-          <el-table-column prop="inventory" label="库存" >
-          </el-table-column>
-          <el-table-column prop="sale" label="销量" >
-          </el-table-column>
           <el-table-column label="图片" >
             <template slot-scope="scope">
             <el-image :src="scope.row.image" min-width="80" height="100">
@@ -52,6 +44,14 @@
               </div>
             </el-image>
           </template>
+          </el-table-column>
+          <el-table-column prop="name" label="名称" >
+          </el-table-column>
+          <el-table-column prop="price" label="价格(元)" >
+          </el-table-column>
+          <el-table-column prop="inventory" label="库存" >
+          </el-table-column>
+          <el-table-column prop="sale" label="销量" >
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">

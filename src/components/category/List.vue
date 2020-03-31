@@ -88,7 +88,11 @@ export default {
       }).then(() => {
         this.$http.delete('category/deleteById', { params: { id } }).then(response => {
           this.getCategorys()
-          this.$message.success(response.data.message)
+          if (response.data.status === 200) {
+            this.$message.success(response.data.message)
+          } else {
+            this.$message.error(response.data.message)
+          }
         })
       })
     },
