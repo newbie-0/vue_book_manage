@@ -15,6 +15,12 @@
         </el-table-column>
         <el-table-column prop="role.name" label="角色" >
         </el-table-column>
+        <el-table-column prop="status" label="状态" >
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.status" @change="userStatusChange(scope.row)">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="toEdit(scope.row)" type="text" size="small">编辑</el-button>
@@ -138,6 +144,11 @@ export default {
     async loadRoles() {
       const { data: res } = await this.$http.get('role/findAll')
       this.roles = res.data
+    },
+    userStatusChange(record) {
+      this.$http.put('user/updateStatus', qs.stringify({ id: record.id, status: record.status })).then(res => {
+        this.$message.success(res.data.message)
+      })
     },
     toAddUser() {
       this.addForm = {}

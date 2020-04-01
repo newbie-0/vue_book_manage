@@ -28,7 +28,8 @@ import {
   Dialog,
   Cascader,
   Upload,
-  Image
+  Image,
+  Switch
 } from 'element-ui'
 
 Vue.use(Button)
@@ -58,5 +59,6 @@ Vue.use(Dialog)
 Vue.use(Cascader)
 Vue.use(Upload)
 Vue.use(Image)
+Vue.use(Switch)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
