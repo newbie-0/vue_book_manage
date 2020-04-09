@@ -11,6 +11,7 @@ import CategoryList from '../components/category/List.vue'
 import Info from '../components/book/Info.vue'
 import NotFound from '../components/error/404.vue'
 import UserList from '../components/user/List.vue'
+import CommentCheck from '../components/comment/Check.vue'
 
 Vue.use(VueRouter)
 
@@ -27,10 +28,11 @@ const router = new VueRouter({
         { path: '/book/list', component: BookList, meta: { title: '书籍列表' } },
         { path: '/book/all', component: All, meta: { title: '书籍管理' } },
         { path: '/book/add', component: Add, meta: { title: '书籍管理' } },
-        { path: '/book/checkList', component: CheckList, meta: { title: '书籍审核' } },
+        { path: '/book/check_list', component: CheckList, meta: { title: '书籍审核' } },
         { path: '/category/list', component: CategoryList, meta: { title: '分类管理' } },
         { path: '/book/info', component: Info, meta: { title: '书籍详细信息' } },
-        { path: '/user/list', component: UserList, meta: { title: '用户管理' } }
+        { path: '/user/list', component: UserList, meta: { title: '用户管理' } },
+        { path: '/comment/check', component: CommentCheck, meta: { title: '评论管理' } }
       ]
     },
     { path: '*', component: NotFound }
