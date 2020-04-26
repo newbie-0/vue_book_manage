@@ -99,8 +99,12 @@ export default {
     submit() {
       this.$http.post('category/saveOrUpdate', qs.stringify(this.form)).then(res => {
         this.dialogFormVisible = false
-        this.getCategorys()
-        this.$message.success(res.data.message)
+        if (res.data.status === 200) {
+          this.getCategorys()
+          this.$message.success(res.data.message)
+        } else {
+          this.$message.error(res.data.message)
+        }
       })
     }
   }

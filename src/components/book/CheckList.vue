@@ -55,6 +55,7 @@ export default {
     },
     toCheck(id) {
       this.dialogFormVisible = true
+      this.form = {}
       this.id = id
     },
     submit() {

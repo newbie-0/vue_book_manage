@@ -120,13 +120,13 @@ export default {
     },
     putaway(id) {
       this.$http.put('book/putaway', qs.stringify({ id })).then(res => {
-        this.getAllBooks()
+        this.getBooks1()
         this.$message.success(res.data.message)
       })
     },
     soldout(id) {
       this.$http.put('book/soldOut', qs.stringify({ id })).then(res => {
-        this.getAllBooks()
+        this.getBooks2()
         this.$message.success(res.data.message)
       })
     }
