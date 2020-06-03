@@ -29,7 +29,8 @@ import {
   Cascader,
   Upload,
   Image,
-  Switch
+  Switch,
+  Radio
 } from 'element-ui'
 
 Vue.use(Button)
@@ -60,5 +61,6 @@ Vue.use(Cascader)
 Vue.use(Upload)
 Vue.use(Image)
 Vue.use(Switch)
+Vue.use(Radio)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

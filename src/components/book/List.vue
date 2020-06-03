@@ -56,7 +56,7 @@
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click="toReview(scope.row)" type="text" size="small">查看</el-button>
-              <!--<el-button @click="toAdd(scope.row)" type="text" size="small">添加</el-button>-->
+              <el-button @click="toCollect(scope.row.id)" type="text" size="small">收藏</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -68,9 +68,11 @@
     </div>
 </template>
 <script>
+import qs from 'querystring'
 export default {
   data() {
     return {
+      user: '',
       data: [],
       input: '',
       categorys: [],
@@ -79,6 +81,8 @@ export default {
     }
   },
   created() {
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    this.user = user
     this.getBookList()
     this.getCategoryList()
   },
@@ -101,9 +105,12 @@ export default {
     toReview(record) {
       this.$router.push({ path: '/book/info', query: record })
     },
-    // toAdd() {
-
-    // },
+    toCollect(id) {
+      this.$http.post('collect/save', qs.stringify({ bookId: id, userId: this.user.id })).then(res => {
+        this.$message.success(res.data.message)
+        this.$router.push('/collect/list')
+      })
+    },
     // 按照分类进行查询
     selectByCategory(id) {
       this.categoryId = id

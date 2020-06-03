@@ -5,7 +5,7 @@
       <div class="txtbox">
         <p>对不起，您请求的页面不存在、或已被删除、或暂时不可用</p>
         <p class="paddingbox">请点击以下链接继续浏览网页</p>
-        <p>》<a style="cursor:pointer" @click="toWelcome">返回欢迎页面</a></p>
+        <p>》<a style="cursor:pointer" @click="toWelcome">返回主页</a></p>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@ export default {
   created() {},
   methods: {
     toWelcome() {
-      this.$router.push('/welcome')
+      this.$router.push('/main')
     }
   }
 }

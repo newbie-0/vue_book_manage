@@ -1,13 +1,22 @@
 <template>
   <div>
     <el-card>
-      <el-button type="primary" @click="toAddUser">添加用户</el-button>
+      <!--<el-button type="primary" @click="toAddUser">添加用户</el-button>-->
       <el-table :data="users" style="width: 100%" border>
         <el-table-column type="index" label="序号" width="50">
         </el-table-column>
         <el-table-column prop="username" label="用户名" >
         </el-table-column>
         <el-table-column prop="realname" label="姓名" >
+        </el-table-column>
+        <el-table-column prop="realname" label="头像" >
+          <template slot-scope="scope">
+            <el-image :src="scope.row.userFace" min-width="80" height="100">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+          </template>
         </el-table-column>
         <el-table-column prop="telephone" label="电话号码" >
         </el-table-column>
@@ -21,9 +30,9 @@
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="50">
           <template slot-scope="scope">
-            <el-button @click="toEdit(scope.row)" type="text" size="small">编辑</el-button>
+            <!--<el-button @click="toEdit(scope.row)" type="text" size="small">编辑</el-button>-->
             <el-button @click="toDelete(scope.row.id)" type="text" size="small" v-if="scope.row.roleId !== 3">删除</el-button>
           </template>
         </el-table-column>
@@ -113,6 +122,7 @@ export default {
       addForm: {},
       updateDialog: false,
       updateForm: [],
+      userFace: '',
       addFormRules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -158,12 +168,13 @@ export default {
       const data = new FormData()
       data.append('file', file.file)
       this.$http.post('upload/image', data).then(res => {
-        this.addForm.userFace = res.data.data
+        this.userFace = res.data.data
       })
     },
     submitAdd() {
       this.$refs.addFormRef.validate(valid => {
         if (!valid) return false
+        this.addForm.userFace = this.userFace
         this.$http.post('user/save', qs.stringify(this.addForm)).then(res => {
           this.addDialog = false
           this.loadUsers()
@@ -176,6 +187,7 @@ export default {
       this.updateForm = record
     },
     submitUpdate() {
+      this.updateForm.userFace = this.userFace
       this.$http.put('user/update', qs.stringify(this.updateForm)).then(res => {
         this.updateDialog = false
         this.loadUsers()

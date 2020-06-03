@@ -3,6 +3,7 @@
       <!-- 头部区域 -->
       <el-header>
         <span>书籍管理系统</span>
+        <span class="main" @click="toMain">个人主页</span>
         <el-tooltip class="item" effect="dark" content="退出" placement="bottom" :enterable="false">
         <i class="el-icon-switch-button" @click="logout"></i>
         </el-tooltip>
@@ -55,6 +56,9 @@ export default {
     this.getMenuList()
   },
   methods: {
+    toMain() {
+      this.$router.push('/main')
+    },
     logout () {
       window.sessionStorage.clear()
       this.$router.push('/login')
@@ -77,6 +81,10 @@ export default {
   align-items: center;
   color: #000;
   font-size: 20px;
+}
+
+.main {
+  cursor: pointer;
 }
 
 .el-aside {

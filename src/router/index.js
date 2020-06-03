@@ -12,6 +12,7 @@ import Info from '../components/book/Info.vue'
 import NotFound from '../components/error/404.vue'
 import UserList from '../components/user/List.vue'
 import CommentCheck from '../components/comment/Check.vue'
+import Collect from '../components/collect/List.vue'
 
 Vue.use(VueRouter)
 
@@ -22,9 +23,9 @@ const router = new VueRouter({
     {
       path: '/home',
       component: Home,
-      redirect: '/welcome',
+      redirect: '/main',
       children: [
-        { path: '/welcome', component: Welcome, meta: { title: '欢迎界面' } },
+        { path: '/main', component: Welcome, meta: { title: '个人主页' } },
         { path: '/book/list', component: BookList, meta: { title: '书籍列表' } },
         { path: '/book/all', component: All, meta: { title: '书籍管理' } },
         { path: '/book/add', component: Add, meta: { title: '书籍管理' } },
@@ -32,7 +33,8 @@ const router = new VueRouter({
         { path: '/category/list', component: CategoryList, meta: { title: '分类管理' } },
         { path: '/book/info', component: Info, meta: { title: '书籍详细信息' } },
         { path: '/user/list', component: UserList, meta: { title: '用户管理' } },
-        { path: '/comment/check', component: CommentCheck, meta: { title: '评论管理' } }
+        { path: '/comment/check', component: CommentCheck, meta: { title: '评论管理' } },
+        { path: '/collect/list', component: Collect, meta: { title: '我的收藏' } }
       ]
     },
     { path: '*', component: NotFound }
