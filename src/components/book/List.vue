@@ -15,7 +15,7 @@
           </div>
           <el-row :gutter="40">
             <el-col :span="8">
-              <el-input placeholder="请输入书籍名称" v-model="input">
+              <el-input placeholder="请输入书籍名称" v-model="input" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
               </el-input>
             </el-col>
@@ -56,7 +56,7 @@
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click="toReview(scope.row)" type="text" size="small">查看</el-button>
-              <el-button @click="toCollect(scope.row.id)" type="text" size="small">收藏</el-button>
+              <el-button @click="toAdd(scope.row.id)" type="text" size="small">添加</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -105,10 +105,10 @@ export default {
     toReview(record) {
       this.$router.push({ path: '/book/info', query: record })
     },
-    toCollect(id) {
-      this.$http.post('collect/save', qs.stringify({ bookId: id, userId: this.user.id })).then(res => {
+    toAdd(id) {
+      this.$http.post('shelf/save', qs.stringify({ bookId: id, userId: this.user.id })).then(res => {
         this.$message.success(res.data.message)
-        this.$router.push('/collect/list')
+        this.$router.push('/shelf/list')
       })
     },
     // 按照分类进行查询

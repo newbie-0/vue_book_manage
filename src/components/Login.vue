@@ -154,6 +154,7 @@ export default {
         }
         this.registerLoading = false
         this.registerForm = {}
+        this.clickLogin()
       })
     }
   }

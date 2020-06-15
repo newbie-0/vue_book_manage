@@ -13,6 +13,9 @@ import NotFound from '../components/error/404.vue'
 import UserList from '../components/user/List.vue'
 import CommentCheck from '../components/comment/Check.vue'
 import Collect from '../components/collect/List.vue'
+import Shelf from '../components/shelf/List.vue'
+import Pay from '../components/shelf/Pay.vue'
+import Content from '../components/shelf/Content.vue'
 
 Vue.use(VueRouter)
 
@@ -34,7 +37,10 @@ const router = new VueRouter({
         { path: '/book/info', component: Info, meta: { title: '书籍详细信息' } },
         { path: '/user/list', component: UserList, meta: { title: '用户管理' } },
         { path: '/comment/check', component: CommentCheck, meta: { title: '评论管理' } },
-        { path: '/collect/list', component: Collect, meta: { title: '我的收藏' } }
+        { path: '/collect/list', component: Collect, meta: { title: '我的收藏' } },
+        { path: '/shelf/list', component: Shelf, meta: { title: '我的书架' } },
+        { path: '/shelf/pay', component: Pay, meta: { title: '支付界面' } },
+        { path: '/shelf/content', component: Content, meta: { title: '第1章 星空中的青铜巨棺' } }
       ]
     },
     { path: '*', component: NotFound }

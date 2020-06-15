@@ -20,6 +20,7 @@
           <div class="price_info">
             定价：<span>￥<span class="price">{{data.price}}</span></span>
           </div>
+          <el-button type="primary" @click="addToShelf">加入书架</el-button>
         </div>
         <div class="relation_info">
           <span>关联书籍</span>
@@ -31,7 +32,12 @@
             <el-button type="primary" @click="toPublishComment" :style="{ display: this.user.roleId === 1 ? '' : 'none' }">发布评论</el-button>
           </div>
           <el-input type="textarea" :rows="2" placeholder="请留下你的评论" v-model="textarea" :style="{ display: this.user.roleId === 1 ? '' : 'none' }" />
-          <p v-for="comment in comments" :key="comment.id"><span class="name">{{comment.user.realname}}</span>：<span>{{comment.content}}</span></p>
+          <div v-if="comments.length !== 0">
+            <p v-for="comment in comments" :key="comment.id"><span class="name">{{comment.user.realname}}</span>：<span>{{comment.content}}</span></p>
+          </div>
+          <div v-if="comments.length === 0">
+            <span class="msg">此处暂无评论</span>
+          </div>
         </div>
       </el-form>
     </el-card>
@@ -47,7 +53,8 @@ export default {
       relationBook: [],
       textarea: '',
       comments: [],
-      user: {}
+      user: {},
+      num: ''
     }
   },
   created() {
@@ -68,6 +75,12 @@ export default {
     async getRelationBook() {
       const { data: res } = await this.$http.get('book/findRelationBook', { params: { id: this.data.id } })
       this.relationBook = res.data
+    },
+    addToShelf() {
+      this.$http.post('shelf/save', qs.stringify({ userId: this.user.id, bookId: this.data.id })).then(res => {
+        this.$message.success(res.data.message)
+        this.$router.push('/shelf/list')
+      })
     },
     async getComments() {
       const { data: res } = await this.$http.get('comment/findByBookId', { params: { id: this.data.id } })
@@ -144,6 +157,14 @@ h2 {
   }
 }
 
+.el-input-number {
+  width: 100px;
+}
+
+.el-button {
+  margin-left: 30px;
+}
+
 .comment_info {
   clear: both;
   padding: 0 50px;
@@ -159,5 +180,15 @@ h2 {
   .name {
     color: #1a66b3;
   }
+  .msg {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+    color: #909399;
+  }
 }
+
 </style>
